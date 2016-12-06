@@ -1,0 +1,261 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+.discussion-details-body {
+  list-style-type: none;
+}
+
+
+.invalid .help-block {
+    color: red;
+}
+
+.invalid input {
+    background-color: #f2dede;
+}
+
+.dicussion-content, .event-description {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1; /* number of lines to show */
+    -webkit-box-orient: vertical;
+}
+
+.time-info {
+    float: right;
+    padding-right: 15px;
+    color: #999;
+}
+
+.likes {
+    margin-left: 10px;
+}
+
+.dislikes {
+    margin-left: 10px;
+}
+
+.edit-time {
+    margin-left: 10px;
+}
+
+.create-discussion, .create-event {
+    float:right;
+}
+
+.discussion-page-header h1, .event-page-header h1 {
+    display: inline;
+}
+
+.banner {
+  width: 100%;
+}
+
+.page-desc-heading {
+  text-align: center;
+}
+
+#home-content .material-icons {
+  font-size: 50px;
+  text-align: center;
+}
+
+.sign-out-button {
+    cursor: pointer;
+}
+
+.container {
+  padding-left: 10%;
+  padding-right: 10%;
+}
+
+#signInContainer, #signUpContainer {
+  text-align: center;
+  padding-left: 30%;
+  padding-right: 30%;
+}
+
+.item-controls {
+  float: right;
+}
+
+.item-controls button {
+  font-size: 12px;
+}
+
+.votes-container {
+  text-align: center;
+  overflow: hidden;
+  padding: 0 !important;
+}
+
+.vote-num {
+  margin-top:-6px;
+  margin-bottom: -6px;
+  width: auto;
+  text-align: center;
+  min-width: 22px;
+}
+
+.reply-container {
+  padding-top: 6px;
+  text-align: left;
+  height: 150px;
+}
+
+.reply-content {
+  overflow: hidden;
+  white-space: pre-line;
+  clear: both;
+  text-overflow:ellipsis;
+}
+
+.content {
+  white-space: pre-line;
+}
+
+.thumb-up {
+  color: #337ab7;
+}
+
+.thumb-down {
+  color: rgb(255,64,129);
+}
+
+.thumb-down-container {
+  margin-left: 10px;
+}
+
+.content {
+  font-size: 18px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.creator-item {
+  border-left-color: #f8f8f8;
+  border-left-style: solid;
+  border-left-width: 15px;
+}
+
+.creator-container {
+  padding-left: 20px;
+}
+
+.user-info {
+  display: inline;
+}
+
+.user-info img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border-style: solid;
+  border-width: 2px;
+}
+
+.user-info .user-name {
+  margin-left: 20px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.list-group h1 {
+  font-size: 25px;
+  margin-bottom: 10px;
+}
+
+#about-container {
+  text-align: justify;
+  padding-left: 15%;
+  padding-right: 15%;
+}
+
+#about-h2 {
+  text-align: center;
+}
+
+.creator {
+  text-align: center;
+  padding: 0 !important;
+}
+
+.creator-text {
+  padding-left: 2.5em;
+  margin-top: 0;
+}
+
+.creator-img {
+  height: 150px;
+  width: 150px;
+  margin: 2em;
+  border-radius: 50%;
+  margin-bottom: 0;
+}
+
+.FAQ-container {
+  margin-right: 10%;
+  margin-left: 10%;
+}
+
+.main-page-discussion h1 {
+  font-size: 14px;
+}
+
+.main-page-discussion ul {
+  list-style: none;
+  padding: 0;
+}
+
+.main-page-discussion .main-page-post-time {
+  color: #999;
+}
+
+.time-container {
+  overflow: auto;
+}
+
+.discussion-header {
+  overflow: auto;
+  margin-bottom: 5px;
+}
+
+.main-page-discussion-title {
+  font-weight: bold;
+}
+
+.main-page-card {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.creat-post-error-message {
+  float: right;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+    .banner { display: none; } 
+}
