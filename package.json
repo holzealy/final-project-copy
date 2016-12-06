@@ -1,8 +1,11 @@
 {
   "name": "final-project-copy",
+  "author": "Alyssa Holzer",
+  "homepage": "https://holzealy.github.io/final-project-copy/build",
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
+    "gh-pages": "^0.12.0",
     "react-scripts": "0.7.0"
   },
   "dependencies": {
