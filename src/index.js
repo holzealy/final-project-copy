@@ -5,7 +5,7 @@ import App from './App';
 import './index.css';
 import 'react-mdl/extra/material.css';
 import 'react-mdl/extra/material.js';
-import { Router, Route, hashHistory, IndexRoute } from 'react-router';
+import {Router, Route, hashHistory, IndexRoute} from 'react-router';
 import SignInPage from './SignInPage.js';
 import SignUpPage from './SignUpPage.js';
 import MainPage from './MainPage.js';
@@ -15,7 +15,9 @@ import EventsPage from './EventsPage.js';
 import EventDetailsPage from './EventDetailsPage.js';
 import About from './About.js';
 import News from './News.js'
+import Resources from './Resources.js'
 
+// firebase config
 var config = {
   apiKey: "AIzaSyCGjkvp_HOL_3SXeLtsGDvq0i3FowxKEmE",
   authDomain: "final-project-copy.firebaseapp.com",
@@ -25,6 +27,7 @@ var config = {
 };
 firebase.initializeApp(config);
 
+//render react routing in DOM
 ReactDOM.render(
   <Router history={hashHistory}>
     <Route path="/" component={App}>
@@ -36,8 +39,9 @@ ReactDOM.render(
       <Route path="discussion/:discussionId" component={DiscussionDetailsPage} />
       <Route path="events" component={EventsPage} />
       <Route path="event/:eventId" component={EventDetailsPage} />
-      <Route path="about" component={About} />
-      <Route path="news" component={News} />
+      <Route path="about" component={About}/>
+      <Route path="news" component={News}/>
+      <Route path="resources" component={Resources}/>
     </Route>
   </Router>,
   document.getElementById('root')
