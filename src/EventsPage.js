@@ -1,9 +1,8 @@
 import React from 'react';
 import { Link, hashHistory } from 'react-router';
-import { Grid, Cell, Button } from 'react-mdl';
+import { Button } from 'react-mdl';
 import firebase from 'firebase';
 import moment from 'moment';
-import eventsbanner from './img/eventsbanner.jpg';
 
 
 class EventsPage extends React.Component {
@@ -28,27 +27,35 @@ class EventsPage extends React.Component {
 
     render() {
         return (
-            <div>
-                <img className="banner" src={eventsbanner} role="presentation" />
-                <h1>Events</h1>
-                <Grid>
+          <div>
+          <div className="header-cont">
+            <header className="main-header events-header">
+            <div className="header-text">
+            <h1 className="header-title">Events</h1>
+            <p className="header-desc">Meet up withs peers in the area!</p>
+            </div>
+            </header>
+            </div>
+            <br/>
+            <div className='container'>
                     <NewEvent />
                     <EventsList />
-                </Grid>
             </div>
+          </div>
         );
     }
 }
 
+//box for submitting a new event to the page
 class NewEvent extends React.Component {
     constructor(props) {
         super(props);
         this.state = { title: "", date: "", time: "", location: "", description: "" };
-
+        
         this.handleInputChange = this.handleInputChange.bind(this);
     }
 
-    //handles title input
+    //handles field input and stores in state
     handleInputChange(event, field) {
         this.setState({ [field]: event.target.value });
     }
@@ -68,6 +75,7 @@ class NewEvent extends React.Component {
             description: this.state.description,
             postTime: firebase.database.ServerValue.TIMESTAMP
         }
+        //reset input fields
         this.setState({
             title: "",
             date: "",
@@ -75,14 +83,16 @@ class NewEvent extends React.Component {
             location: "",
             description: ""
         });
+        //add event data to firebase db
         eventsRef.push(eventData);
     }
 
     render() {
+        //for submit button
         var postEnabled = (this.state.title !== '' && this.state.date !== '' && this.state.time !== '' && this.state.location !== '' && this.state.description !== '');
 
         return (
-            <Cell col={12} className="list-group-item">
+            <div className="col-xs-10 col-xs-offset-1 list-group-item">
                 <h2>Add a new event</h2>
                 <form>
                     <input type="text" className="form-control" value={this.state.title} onChange={(event) => this.handleInputChange(event, "title")} placeholder="Title" /> <br />
@@ -92,11 +102,12 @@ class NewEvent extends React.Component {
                     <textarea type="text" className="form-control" value={this.state.description} onChange={(event) => this.handleInputChange(event, "description")} placeholder="Event description" /> <br />
                 </form>
                 <Button type="button" onClick={(event) => this.handlePostEvent(event)} aria-label="post event" colored raised disabled={!postEnabled}>Post Event</Button>
-            </Cell>
+            </div>
         );
     }
 }
 
+//holds all event items
 class EventsList extends React.Component {
     constructor(props) {
         super(props);
@@ -104,6 +115,7 @@ class EventsList extends React.Component {
     }
 
     componentWillMount() {
+        //orders by closest date at the top
         this.eventsRef = firebase.database().ref('events').orderByChild('date');
         this.eventsRef.on('value', (snapshot) => {
             var eventsArray = [];
@@ -112,7 +124,7 @@ class EventsList extends React.Component {
                 event.key = child.key;
                 eventsArray.push(event);
             });
-            //updates list
+            //updates event list
             this.setState({ events: eventsArray });
         });
         //listens for changes to user obj in database and stores in state
@@ -124,8 +136,6 @@ class EventsList extends React.Component {
 
     componentWillUnmount() {
         //unregister user and message listeners
-        // firebase.database().ref('events').off();
-        // firebase.database().ref('users').off();
         if (this.usersRef) {
             this.usersRef.off();
         }
@@ -139,6 +149,7 @@ class EventsList extends React.Component {
         yesterday = yesterday.getTime();
         var eventItems = this.state.events.map((event) => {
             var eventDate = Date.parse(event.date);
+            //only shows events that are from today on
             if (eventDate > yesterday) {
                 return <EventItem event={event} eventId={event.key} key={event.key} />
             } else {
@@ -147,10 +158,10 @@ class EventsList extends React.Component {
         });
 
         return (
-            <Cell col={12}>
+            <div className="col-xs-10 col-xs-offset-1">
                 <h2>Upcoming Events</h2>
                 {eventItems}
-            </Cell>
+            </div>
         );
     }
 }
@@ -159,18 +170,20 @@ class EventsList extends React.Component {
 class EventItem extends React.Component {
     render() {
         return (
-            <Link to={"/event/" + this.props.eventId} className="list-group-item">
-                <h2 className="list-group-item-heading">{this.props.event.title}</h2>
-                <p>Date: {this.props.event.date}</p>
-                <p>Time: {this.props.event.time}</p>
-                <p>Location: {this.props.event.location}</p>
-                <hr />
-                <p className="list-group-item-text event-description">
-                    {this.props.event.description}
-                </p>
-                <br />
-                <p>Event created {moment(this.props.event.postTime).fromNow()}by {this.props.event.displayName}</p>
-            </Link>
+            <div className="post">
+                <Link to={"/event/" + this.props.eventId} className="list-group-item">
+                    <h2 className="list-group-item-heading">{this.props.event.title}</h2>
+                    <p><span className="event-info">Date</span>: {this.props.event.date}</p>
+                    <p><span className="event-info">Time</span>: {this.props.event.time}</p>
+                    <p><span className="event-info">Location</span>: {this.props.event.location}</p>
+                    <hr />
+                    <p className="list-group-item-text event-description">
+                        {this.props.event.description}
+                    </p>
+                    <br />
+                    <p>Event created <span className="event-info">{moment(this.props.event.postTime).fromNow()}</span> by <span className="event-info">{this.props.event.displayName}</span></p>
+                </Link>
+            </div>
         );
     }
 }

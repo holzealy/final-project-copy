@@ -6,6 +6,9 @@ import Time from 'react-time';
 import 'bootstrap/dist/css/bootstrap.css';
 import noUserPic from './img/no-user-pic.png';
 
+// the threshold for deleting the discussion,
+// currently it is set to 2 so that any discussion
+// that gets 2 dislikes will be delted automatically
 const DELETE_DISCUSSION_THRESHOLD = 2;
 
 class DiscussionDetailsPage extends React.Component {
@@ -36,6 +39,8 @@ class DiscussionDetailsPage extends React.Component {
         this.unregister = firebase.auth().onAuthStateChanged(user => {
             if(user) {
                 console.log('Auth state changed: logged in as' + user.email + ", " + user.photoURL);
+
+                // listen for new discussions
                 this.detailRef = firebase.database().ref('discussions/' + this.props.params.discussionId);              
                 this.detailRef.on('value', (snapshot) => {
                     var obj = {};
@@ -49,6 +54,7 @@ class DiscussionDetailsPage extends React.Component {
                     this.setState(obj);
                 });
 
+                // listen for new conversations
                 this.conversationsRef = firebase.database().ref('discussions/' + this.props.params.discussionId + "/conversations");
                 this.conversationsRef.on('value', (snapshot) => {
                     var conversationsObjArray = [];
@@ -63,6 +69,7 @@ class DiscussionDetailsPage extends React.Component {
                     this.setState({conversations: conversationsObjArray});
                 });
 
+                // listen for new likes
                 this.likesRef = firebase.database().ref('discussions/' + this.props.params.discussionId + "/likes");
                 this.likesRef.on('value', (snapshot) => {
                     var likesObjs = {};
@@ -74,6 +81,7 @@ class DiscussionDetailsPage extends React.Component {
                     this.setState({likes: likesObjs});
                 });
 
+                // listen for new dislikes
                 this.dislikesRef = firebase.database().ref('discussions/' + this.props.params.discussionId + "/dislikes");
                 this.dislikesRef.on('value', (snapshot) => {
                     var dislikesObjs = {};
@@ -83,6 +91,7 @@ class DiscussionDetailsPage extends React.Component {
                         count++;
                     });
 
+                    // delete the post if this discussion gets 2 dislikes
                     if (count >= DELETE_DISCUSSION_THRESHOLD) {
                         firebase.database().ref('discussions/' + this.props.params.discussionId).remove().then(() => {
                             this.setState({tooManyDislikesModalOpen:true});
@@ -209,6 +218,9 @@ class ReplyItem extends React.Component {
         this.handleEditSubmit = this.handleEditSubmit.bind(this);
     }
 
+    // calculates the votes for this reply
+    // also disables the vote button if a user
+    // has voted already
     calculateVotes(objs) {
         var count = 0;
         var bool = false;
@@ -275,6 +287,9 @@ class ReplyItem extends React.Component {
         var currentUser = firebase.auth().currentUser;
         var editAndDeleteButtonShown = (currentUser !== null ? (currentUser.uid === this.props.conversationDetails.userId) : false);
         var content = undefined;
+
+        // conditional rendering depends on whether this user is in
+        // edit mode or normal mode
         if (this.state.editMode) {
             content = (
                         <form id="replyEdit" onSubmit={this.handleEditSubmit}>
@@ -325,7 +340,7 @@ class ReplyItem extends React.Component {
     }
 }
 
-
+// this component represents the discussion created by the owner
 class CreatorItem extends React.Component {
     constructor(props) {
         super(props);
@@ -348,6 +363,7 @@ class CreatorItem extends React.Component {
         this.handleEditClick = this.handleEditClick.bind(this);
     }
 
+    // calculates the likes and dislikes for this discussion
     calculateLikesAndDislikes(objs) {
         var count = 0;
         var bool = false;
@@ -362,6 +378,8 @@ class CreatorItem extends React.Component {
         return {count: count, bool:bool};
     }
 
+    // re-calculate likes and dislikes when it has received new
+    // data, and also updates the likes or dislikes button
     componentWillReceiveProps(nextProps) {
         var obj = {};
         Object.keys(nextProps).forEach((key) => {
@@ -469,6 +487,7 @@ class CreatorItem extends React.Component {
     }
 }
 
+// this component represents the reply area on the discussion details page
 class ReplyArea extends React.Component {
     constructor(props) {
         super(props);
@@ -515,6 +534,7 @@ class ReplyArea extends React.Component {
     }
 }
 
+// this component represents the user info section inside each reply thread
 class UserInfo extends React.Component {
     render() {
         var imgStyle={'borderColor': this.props.photoURL};

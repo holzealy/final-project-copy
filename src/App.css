@@ -1,3 +1,5 @@
+/* Formatting, size, and styles for different elements */
+
 .App {
   text-align: center;
 }
@@ -89,8 +91,9 @@
 
 #signInContainer, #signUpContainer {
   text-align: center;
-  padding-left: 30%;
-  padding-right: 30%;
+  padding-left: 10%;
+  padding-right: 10%;
+  width: 40%;
 }
 
 .item-controls {
@@ -178,6 +181,10 @@
   font-weight: bold;
 }
 
+.list-group{
+  padding-top: 20px;
+}
+
 .list-group h1 {
   font-size: 25px;
   margin-bottom: 10px;
@@ -251,11 +258,108 @@
   float: right;
 }
 
+#topNav {
+  padding-top: 15px;
+}
+
+.header-cont {
+  overflow: hidden;
+  width: 100%;
+  margin: 0 auto 0 auto;
+}
+
+.main-header {
+  background-image: url('./img/homebanner.jpg');
+  background-size: cover;
+  padding: 0;
+  margin: 0;
+  padding-top: 50px;
+  width: 100%;
+  height: 100%;
+}
+
+.about-header {
+  background-image: url('./img/mainbanner.jpg');
+}
+
+.news-header {
+  background-image: url('./img/newsbanner.jpg');
+}
+
+.discussion-header {
+  background-image: url('./img/discussionsbanner.jpg');
+}
+
+.events-header {
+  background-image: url('./img/eventsbanner.jpg');
+}
+
+.resources-header {
+  background-image: url('./img/resourcesbanner.jpg');
+}
+
+.header-text {
+  color: white;
+  padding: 20px;
+  padding-left: 7%;
+}
+.header-title {
+  font-size: 70px;
+}
+.header-desc {
+  font-size: 40px;
+  list-style: none;
+  font-weight: lighter;
+  line-height: 1em;
+}
+
+.list-item {
+  font-style: italic;
+}
+
+.nav-label {
+  font-weight: lighter;
+  text-align: center;
+}
+
+#resources-list {
+  list-style: none;
+  padding: 2em;
+  font-size: 30px;
+}
+
+#resources-list a {
+  font-weight: 100;
+}
+
+#main-about {
+  font-size: 30px;
+  padding-bottom: 0;
+  font-weight: lighter;
+  line-height: 1em;
+}
+
+#main-about-wrapper {
+  padding-bottom: 1.5em;
+  padding: 2em;
+  padding-top: 0.5em;
+}
+
+.post {
+  margin-bottom: 25px;
+}
+
+.event-info {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
 
+/* when the page is less than 768, hide the header description and top navigation links */
 @media (max-width: 768px) {
-    .banner { display: none; } 
+    .header-desc, #topNav { display: none; }
 }

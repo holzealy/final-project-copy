@@ -1,10 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router';
 import $ from 'jquery';
 import { Card, CardTitle, CardText, CardActions } from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
-import newsbanner from './img/newsbanner.jpg';
 
 class News extends React.Component {
   constructor(props) {
@@ -12,6 +10,7 @@ class News extends React.Component {
     this.state = { news: undefined }
     this.fetchData = this.fetchData.bind(this);
   }
+  //fetches data from NYT API
   fetchData() {
     var thisComponent = this;
     var url = "https://api.nytimes.com/svc/search/v2/articlesearch.json";
@@ -32,29 +31,40 @@ class News extends React.Component {
       });
   }
 
-
-
+  //fetch data upon load
   componentDidMount() {
     this.fetchData();
   }
 
+  //render stories after the fetch
   render() {
     var content = null;
     if (this.state.news) {
       content = <Stories storiesObj={this.state.news} />;
     }
 
+    //return news page
     return (
       <div>
-        <img className="banner" src={newsbanner} role="presentation" />
-        <h1>News</h1>
-        {content}
+        <div className="header-cont">
+          <header className="main-header news-header">
+            <div className="header-text">
+              <h1 className="header-title">News</h1>
+              <p className="header-desc">A newsfeed focusing on immigration matters straight from the NYTimes.</p>
+            </div>
+          </header>
+        </div>
+        <div className="container">
+          <br />
+          {content}
+          <p>Credit: <a href="http://developer.nytimes.com/">NY Times developer</a></p>
+        </div>
       </div>
     )
   }
 }
 
-//component UpcomingLaunches is the container for all of the launch cards
+//component Stories is the container for all of the launch cards
 class Stories extends React.Component {
   render() {
     var news = this.props.storiesObj.docs;
@@ -70,26 +80,27 @@ class Stories extends React.Component {
   }
 }
 
-//component LaunchCard takes all the different launches and creates a "card" of information for each launch
+//component StoryCard takes all the different stories and creates a "card" of information for each story
 class StoryCard extends React.Component {
   render() {
     //  var news = this.props.stories.docs;
     //  console.log(news);
-
     return (
-      <MuiThemeProvider>
-        <Card>
-          <CardTitle title={this.props.story.headline.main} subtitle={this.props.story.pub_date} />
-          <CardText>
-            {this.props.story.snippet}
-          </CardText>
-          <CardActions>
-            <a href={this.props.story.web_url}>
-              <FlatButton label="Learn More" />
-            </a>
-          </CardActions>
-        </Card>
-      </MuiThemeProvider>
+      <div className="post">
+        <MuiThemeProvider>
+          <Card>
+            <CardTitle title={this.props.story.headline.main} subtitle={this.props.story.pub_date} />
+            <CardText>
+              {this.props.story.snippet}
+            </CardText>
+            <CardActions>
+              <a target="_blank" href={this.props.story.web_url}>
+                <RaisedButton label="Learn More" />
+              </a>
+            </CardActions>
+          </Card>
+        </MuiThemeProvider>
+      </div>
     );
   }
 }

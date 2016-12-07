@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router';
 import firebase from 'firebase';
-import homebanner from './img/homebanner.jpg';
 import Time from 'react-time';
+import RaisedButton from 'material-ui/RaisedButton';
+import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 
 class MainPage extends React.Component {
     constructor(props) {
@@ -10,8 +11,9 @@ class MainPage extends React.Component {
 
         this.state = {'discussions': null};
     }
+    //controls for when the user is signed in or out, gets the discussions for the discussion preview
     componentDidMount() {
-        /* Add a listener and callback for authentication events */
+        // Add a listener and callback for authentication events
         this.unregister = firebase.auth().onAuthStateChanged(user => {
             if (user) {
                 console.log('Auth state changed: logged in as', user.email);
@@ -28,11 +30,18 @@ class MainPage extends React.Component {
                 var obj = {'key': child.key, 'value': child.val()};
                 discussionsArray.push(obj);
             });
-            this.setState({'discussions': discussionsArray});
+            //updates discussion list
+            discussionsArray.sort((a, b) => {
+                return b.value.createTime - a.value.createTime;
+            });
+            var sliced = discussionsArray.slice(0, 2);
+            this.setState({'discussions': sliced});
         });
     }
 
+    //if the user is signed in, they can see the discussions, if they aren't they can't click through
     componentWillUnmount() {
+        //unregister listeners
         if (this.discussionRef) {
             this.discussionRef.off();
         }
@@ -41,9 +50,11 @@ class MainPage extends React.Component {
         }
     }
 
+    //render the main page: header, about preview, feature (discussion, news, events) preview cards
     render() {
         var discussionContent = undefined;
         if (this.state.discussions) {
+            //gives preview of recent discussions
             var discussions = this.state.discussions.map((discussion) => {
                 return (<DiscussionItem key={discussion.key} discussion={discussion.value}/>);
             });
@@ -53,29 +64,36 @@ class MainPage extends React.Component {
                                         {discussions}
                                     </ul>
                                 </div>);
-        } else {
+        } else { //if the discussion board is empty
             discussionContent = (<div className="main-page-discussion">There are no discussions currently. Create your first one!</div>)
         }
 
         return (
-            <div className="container" id="home-content">
-                <div className="row">
-                    <div className="col-xs-12">
-                        <img className="banner" src={homebanner} role="presentation" />
+                <div>
+                  <div className="header-cont">
+                    <header className="main-header">
+
+                    <div className="header-text">
+                    <h1 className="header-title">INTL</h1>
+                    <p className="header-desc">A hub for international students</p>
+                    <ul>
+                    <li className="header-desc list-item">at UW</li>
+                    <li className="header-desc list-item">in the Seattle area</li>
+                    <li className="header-desc list-item">and beyond</li>
+                    </ul>
                     </div>
+
+                    </header>
+                  </div>
+                    <div className="container" id="home-content">
                     <div className="col-xs-12">
                         <h2>About Us</h2>
-                        <p>A serious concern for immigrants in the United States post Donald Trump’s presidential election is how their “status”
-                        will be affected. Particularly for students, many are concerned and want to know how his proposed policies and the
-                        socio-political climate produced by his win will affect their education and safety. </p>
-                        <p>This website was designed with international students in mind, primarily to aid them in understanding how the election
-                        will affect them and provides resources and answers to their questions.
-                        Users can communicate via a discussion board, upload and view events within international communities, and track legislation
-                        that will directly affect their lives & education in the United States. </p>
-                        <p>This site should be able to answer
-                        questions that the campaign has stirred up and help provide stability during a time of such uncertainty for international
-                        students and persons at the University of Washington.
-                        </p>
+                        <div id="main-about-wrapper">
+                        <p id="main-about">In this time of social and political conflict in the United States, INTL hopes to help international students in Seattle stay informed. We aim to unite and create a community in our area. INTL was created by three students at the University of Washington.</p>
+                        <MuiThemeProvider>
+                        <Link to="/about"><RaisedButton label="Learn more about INTL"></RaisedButton></Link>
+                        </MuiThemeProvider>
+                        </div>
                     </div>
 
                     <div className="col-xs-12 col-md-4 main-page-card">
@@ -115,6 +133,7 @@ class MainPage extends React.Component {
     }
 }
 
+//individual discussion preview items
 class DiscussionItem extends React.Component {
     render() {
         return (
